@@ -1,8 +1,6 @@
 #ifndef __INC_FASTSPI_NOP_H
 #define __INC_FASTSPI_NOP_H
 
-#if 0 // Guard against the arduino ide idiotically including every header file
-
 #include "FastLED.h"
 
 FASTLED_NAMESPACE_BEGIN
@@ -34,7 +32,8 @@ public:
 	void waitFully();
 
 	/// not the most efficient mechanism in the world - but should be enough for sm16716 and friends
-	template <uint8_t BIT> inline static void writeBit(uint8_t b) { /* TODO */ }
+  /// write a single bit out, which bit from the passed in byte is determined by template parameter
+  template <uint8_t BIT> inline static void writeBit(uint8_t b) { /* TODO */ }
 
 	/// write a byte out via SPI (returns immediately on writing register)
 	void writeByte(uint8_t b) { /* TODO */ }
@@ -50,9 +49,6 @@ public:
 	/// A full cycle of writing a raw block of data out, including select, release, and waiting
 	void writeBytes(uint8_t *data, int len) { /* TODO */ }
 
-	/// write a single bit out, which bit from the passed in byte is determined by template parameter
-	template <uint8_t BIT> inline static void writeBit(uint8_t b) { /* TODO */ }
-
 	/// write out pixel data from the given PixelController object
 	template <uint8_t FLAGS, class D, EOrder RGB_ORDER> void writePixels(PixelController<RGB_ORDER> pixels) { /* TODO */ }
 
@@ -60,5 +56,4 @@ public:
 
 FASTLED_NAMESPACE_END
 
-#endif
 #endif

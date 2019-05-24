@@ -6,7 +6,9 @@
 #include "controller.h"
 #include "lib8tion.h"
 
+#if !defined(FASTLED_NO_PLATFORM)
 #include "fastspi_bitbang.h"
+#endif
 
 FASTLED_NAMESPACE_BEGIN
 
@@ -25,13 +27,24 @@ FASTLED_NAMESPACE_BEGIN
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#if defined(FASTLED_NO_PLATFORM)
+#include "fastspi_nop.h"
+
+template<uint8_t _DATA_PIN, uint8_t _CLOCK_PIN, uint8_t _SPI_CLOCK_DIVIDER>
+class SPIOutput : public NOPSPIOutput<_DATA_PIN, _CLOCK_PIN, _SPI_CLOCK_DIVIDER> {};
+
+#define FASTLED_ALL_PINS_HARDWARE_SPI
+#endif
+
 #if !defined(FASTLED_ALL_PINS_HARDWARE_SPI)
 template<uint8_t _DATA_PIN, uint8_t _CLOCK_PIN, uint8_t _SPI_CLOCK_DIVIDER>
 class SPIOutput : public AVRSoftwareSPIOutput<_DATA_PIN, _CLOCK_PIN, _SPI_CLOCK_DIVIDER> {};
 #endif
 
+#if !defined(FASTLED_NO_PLATFORM)
 template<uint8_t _DATA_PIN, uint8_t _CLOCK_PIN, uint8_t _SPI_CLOCK_DIVIDER>
 class SoftwareSPIOutput : public AVRSoftwareSPIOutput<_DATA_PIN, _CLOCK_PIN, _SPI_CLOCK_DIVIDER> {};
+#endif
 
 #ifndef FASTLED_FORCE_SOFTWARE_SPI
 

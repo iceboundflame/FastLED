@@ -27,6 +27,20 @@
 #include "platforms/esp/8266/led_sysdefs_esp8266.h"
 #elif defined(ESP32)
 #include "platforms/esp/32/led_sysdefs_esp32.h"
+#elif defined(FASTLED_NO_PLATFORM)
+// No-op stubs to enable compilation
+typedef int RwReg;
+typedef int RoReg;
+inline long micros() { return 0; }
+inline long millis() { return 0; }
+inline void delay(int) { return; }
+inline void yield() { return; }
+
+#define F_CPU 100000000L
+#define FASTLED_NO_PINMAP
+//#define DATA_RATE_MHZ(X) (((100000000L / 1000000L) / X))
+//#define DATA_RATE_KHZ(X) (((100000000L / 1000L) / X))
+
 #else
 // AVR platforms
 #include "platforms/avr/led_sysdefs_avr.h"
