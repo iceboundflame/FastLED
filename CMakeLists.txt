@@ -1,5 +1,5 @@
 project(FastLED)
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} STATIC
         FastLED.cpp
         bitswap.cpp
         colorpalettes.cpp
