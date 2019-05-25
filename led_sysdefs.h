@@ -31,10 +31,32 @@
 // No-op stubs to enable compilation
 typedef int RwReg;
 typedef int RoReg;
-inline long micros() { return 0; }
-inline long millis() { return 0; }
-inline void delay(int) { return; }
-inline void yield() { return; }
+
+#include <chrono>
+#include <thread>
+
+inline uint32_t micros() {
+  std::chrono::microseconds ms = std::chrono::duration_cast<std::chrono::microseconds>(
+      std::chrono::system_clock::now().time_since_epoch()
+  );
+  return (uint64_t) ms.count() & 0xffffffff;
+}
+
+inline uint32_t millis() {
+  std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+      std::chrono::system_clock::now().time_since_epoch()
+  );
+  return (uint64_t) ms.count() & 0xffffffff;
+}
+inline uint32_t get_millisecond_timer() { return millis(); }
+
+inline void delay(int ms) {
+  std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
+
+inline void yield() {
+  std::this_thread::yield();
+}
 
 #define F_CPU 100000000L
 #define FASTLED_NO_PINMAP
